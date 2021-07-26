@@ -27,7 +27,7 @@ addpath(data_folder); addpath(cam_folder);
 [V, F] = readOFF(meshes{4});
 cam = cams{4};
 landmarks = [3048; 1994; 6621; 5560]; % right front leg, left front leg, right back leg, left back leg, 
-figure; MESH_VIS.mesh(F,V,'cams',cam,'landmarks',landmarks);
+%figure; MESH_VIS.mesh(F,V,'cams',cam,'landmarks',landmarks);
 
 
 % % For xyzrgb_dragon1 model:
@@ -36,11 +36,13 @@ figure; MESH_VIS.mesh(F,V,'cams',cam,'landmarks',landmarks);
 % landmarks = [91921; 58423; 51903; 52775]; % right front leg, left front leg, right back leg, left back leg, 
 
 
-
+hold on
 %% Matching: 
-
-
-
+[HKS, t] = heatKernelSignature(V, F);
+for iter = 1 : size(landmarks,1)        
+    plot(log(t), HKS(landmarks(iter),:));
+end
+hold off
 
 
 

@@ -14,25 +14,27 @@ cams = {cams.name};
 
 addpath(data_folder); addpath(cam_folder);
 
-[V1, F1] = readOFF([data_folder, meshes{1}]);
-[V2, F2] = readOFF([data_folder, meshes{2}]);
-cam1 = cams{1};
-cam2 = cams{2};
+[V1, F1] = readOFF('..\data\cat-00.off');
+[V2, F2] = readOFF('..\data\cat-01.off');
+cam1 = cams{3};
+cam2 = cams{4};
 
 
 %%
 % Compute descriptors
-
+[HKS1, t1] = heatKernelSignature(V1, F1);
+[HKS2, t2] = heatKernelSignature(V2, F2);
 
 % Select a few landmarks on M1
 % To easily select landmarks use: MESH_VIS.selectLandmark(F1,V1)
-LankmarksInd = [];
+LankmarksInd = [3048; 1994; 6621; 5560];
 
 % Find the matching vertices on M2 by finding signatures that are
 % closest (in L2 sense) to the signatures of the given landmarks.
 % Hint: knnsearch
-closestPoints = [];
 
+closestPoints = knnsearch(HKS2, HKS1(LankmarksInd,:)); % [3048; 1994; 6621; 5560];
+disp(closestPoints);
 
 % Visualize the correspondence
 figure;

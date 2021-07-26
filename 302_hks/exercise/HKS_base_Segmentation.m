@@ -24,10 +24,10 @@ cam = cams{1};
 
 k = 5;
 d = 5; % GPS embedding dimention
-GPS = globalPointSignature(V, F, k);
+[HKS, t] = heatKernelSignature(V, F);
 
 rng(1); % For reproducibility
-[idx,C] = kmeans(GPS, d);
+[idx,C] = kmeans(HKS, d);
 
 disp(size(idx));
 
