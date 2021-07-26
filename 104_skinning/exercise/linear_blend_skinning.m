@@ -23,6 +23,28 @@ function [U] = linear_blend_skinning(V, T, W)
 %%%%%%%%%%
 
 % naive closest point (replace this one with your solution)
-U = V;
+
+
+Homolog_v = ones(3,  size(V,1));
+new_V = V';
+Homolog_v(1,:) = new_V(1,:);
+Homolog_v(2,:) = new_V(2,:);
+
+U = zeros(2, size(V,1));
+
+[r, c] = size(W);
+
+for i= 1: c
+    disp(size(W(:,i)));
+    disp("printing W");
+    disp(size(T(:, :, i)));
+    disp("printing T");
+    disp(size(Homolog_v));
+    disp("printing V");
+
+    U = U + (W(:,i) .* (T(:, :, i)  * Homolog_v)')';
+end
+
+U = U';
 
 end

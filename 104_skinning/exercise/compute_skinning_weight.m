@@ -21,8 +21,27 @@ function W = compute_skinning_weight(V,F,b)
 %%%%%%%%%%
 
 % naive closest point (replace this one with your solution)
-idx = knnsearch(V(b,:),V);
-W = full(sparse([1:size(V,1)], idx, 1, size(V,1), length(b)));
+% idx = knnsearch(V(b,:),V);
+% W = full(sparse([1:size(V,1)], idx, 1, size(V,1), length(b)));
+
+L = cotmatrix(V,F);
+M = massmatrix(V,F);
+B = L * diag(diag(M).^(-1)) * L;
+bc = eye(length(b));
     
+unknown = [1: size(V,1)]';
+unknown(b) = [];
+LHS = B(unknown, unknown);
+
+W = zeros(size(V, 1), length(b));
+
+for ii = 1:length(b)
+        
+    RHS = B(unknown, b) * bc(:, ii);
+    W_unknown = - LHS \ RHS;
+    
+    W(unknown, ii) = W_unknown;
+    W(b, :) = bc;
+
     
 end
